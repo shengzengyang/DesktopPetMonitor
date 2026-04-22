@@ -25,22 +25,6 @@ There may be bugs. If you run into anything or have feature ideas, **please open
 ---
 
 <!-- ============================================================ -->
-## 演示视频 / Demo Video
-
-<div align="center">
-
-https://github.com/user-attachments/assets/placeholder · [直接下载 / Direct download: docs/assets/demo.mp4](./docs/assets/demo.mp4)
-
-<video src="./docs/assets/demo.mp4" controls width="720" muted></video>
-
-</div>
-
-> 如果上面的视频不能在你的浏览器内自动播放,点击上方"直接下载"链接查看。
-> If the video above doesn't autoplay in your browser, click the "Direct download" link above.
-
----
-
-<!-- ============================================================ -->
 
 ## 简体中文
 
