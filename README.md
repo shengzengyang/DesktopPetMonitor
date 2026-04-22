@@ -6,6 +6,24 @@
 
 ---
 
+## 📣 项目缘起 / Project Origin
+
+**中文**:做这个项目的初衷,是因为用 Claude 的时候总担心自己 IP 不小心变了没察觉,以及开机之后忘记打开代理 —— 所以就做了这样一个 doro 桌宠,让它帮我盯着 IP 和系统状态。
+
+本项目可能存在 bug,如果你遇到问题或者想到了新功能,**欢迎提 Issue**,我们会在空余时间修复和跟进。如果你也有想法、想合作、或者**想定制自己的专属角色模型**,也欢迎联系我们 —— **最好是你自己能提供 Live2D 文件**(`.moc3` + `.model3.json` + 纹理等),因为我们对 Live2D 本身的建模/绑定并不熟悉,主要擅长的是把它接进来。
+
+📬 **联系方式 · Telegram**:[@gogogoyang](https://t.me/gogogoyang)
+
+---
+
+**English**: This project was created because I kept worrying about accidentally changing my IP while using Claude, and I often forgot to turn the proxy on after boot — so I built this doro pet to watch the IP and system status for me.
+
+There may be bugs. If you run into anything or have feature ideas, **please open an issue** — we'll fix and improve in our spare time. If you have suggestions, want to collaborate, or **want a custom character model tailored to you**, contact us too. **Ideally you provide the Live2D files yourself** (`.moc3` + `.model3.json` + textures), because we're not very experienced with Live2D modeling/rigging itself — our strength is in wiring it up.
+
+📬 **Contact · Telegram**: [@gogogoyang](https://t.me/gogogoyang)
+
+---
+
 <!-- ============================================================ -->
 ## 演示视频 / Demo Video
 
