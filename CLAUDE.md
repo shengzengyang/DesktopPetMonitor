@@ -286,8 +286,78 @@ testing; include the relevant lines in every bug report.
 - Windows 10/11 — most of the Qt quirks (translucent OpenGL widget, Tool
   window hiding, WS_EX_LAYERED rebuild) are Windows-specific. The code may
   run on macOS / Linux but was never tested there.
-- Python 3.10 — `live2d-py` wheels ship for 3.10 specifically.
+- **Python 3.10 64-bit** — `live2d-py` only ships wheels for 3.10, not 3.11+.
+  Using 3.11/3.12/3.13 will fail at `pip install`. From source, create the
+  venv explicitly with `py -3.10 -m venv venv`.
 - OpenGL 3.0+ — Cubism Core requires it for the shader pipeline.
+- **No VC++ Redistributable install needed by end users** — the packaged
+  exe bundles the MSVC 2015-2022 runtime DLLs itself (see next section).
+
+---
+
+## Building the distributable exe
+
+PyInstaller produces a single-file exe under `dist/DesktopPet.exe`
+(~42 MB) that includes Python, all deps, Live2D assets, and the MSVC
+runtime — end users don't need Python or VC++ Redistributable installed.
+
+Run either:
+
+```bash
+./build.bat                         # full pipeline (venv check + install + build)
+venv/Scripts/python -m PyInstaller --noconfirm --clean DesktopPet.spec
+```
+
+### What's inside the bundle
+
+`DesktopPet.spec` is the authoritative build recipe:
+
+- `datas=[('assets', 'assets')]` — bundles the whole `assets/` tree so
+  Live2D models are available at runtime.
+- `_msvc_binaries` — scans `C:\Windows\System32` and bundles these DLLs
+  at the bundle root (critical that they're at root, not in a subdir,
+  because `live2d.pyd` can't find them if they're buried under
+  `PyQt5/Qt5/bin/` where PyInstaller's default Qt hook places its own
+  copies):
+    - `msvcp140.dll`, `msvcp140_1.dll`, `msvcp140_2.dll`
+    - `vcruntime140.dll`, `vcruntime140_1.dll`
+    - `concrt140.dll` — Microsoft Concurrency Runtime (Live2D threads)
+    - `vccorlib140.dll`
+
+### Frozen-mode path quirks
+
+When running as a `--onefile` exe, PyInstaller extracts everything to a
+temp dir exposed as `sys._MEIPASS`. Two modules have to handle this:
+
+- `pets.py` — uses `sys._MEIPASS` when frozen so asset paths resolve.
+- `logger.py` — writes `doro.log` to `%APPDATA%/DesktopPetMonitor/`
+  (not next to the exe), otherwise PyInstaller wipes the log on exit.
+
+If you add new code that reads files from the project directory, use
+the same `getattr(sys, 'frozen', False)` check.
+
+### No user data in the bundle
+
+The exe is verified clean via `strings dist/DesktopPet.exe | grep ...`
+for API keys, QQ emails, proxy URLs, configured IPs, and build-machine
+paths. User config + log always live in `%APPDATA%/DesktopPetMonitor/`
+— never embedded in the bundle. After every rebuild, run the scan
+before publishing the release:
+
+```bash
+strings dist/DesktopPet.exe | grep -iE "sk-|bearer|@gmail|qq\\.com|googogogo|lyxnb|11373|\\bC:\\\\Users\\\\[^\\\\]+"
+```
+
+If that's empty, the bundle is safe to upload.
+
+### Publishing to GitHub Releases
+
+```bash
+gh release upload v0.1.0 dist/DesktopPet.exe --clobber
+```
+
+The `--clobber` flag overwrites the previous asset with the same name,
+so existing download links keep working.
 
 ---
 
