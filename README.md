@@ -47,25 +47,58 @@ There may be bugs. If you run into anything or have feature ideas, **please open
 
 ### 快速开始
 
-**环境要求**
-- Windows 10/11(OpenGL 3.0+)
-- Python 3.10+
+**共同要求**
+- Windows 10 / 11(需支持 OpenGL 3.0+)
 
-**安装 & 运行**
+有两种使用方式,按需二选一:
+
+---
+
+### 方式 A(推荐):下载 exe 直接运行,无需装 Python
+
+去仓库右侧 **[Releases](https://github.com/shengzengyang/DesktopPetMonitor/releases/latest)** 下载 `DesktopPet.exe`(约 40 MB),**双击即可运行,开箱即用**。
+
+✅ 已打包进 exe 的东西:
+- Python 3.10 运行时
+- 所有 Python 依赖(PyQt5 / live2d-py / psutil / pynvml / requests 等)
+- **Microsoft Visual C++ 2015-2022 运行库**(msvcp140 / vcruntime140 / concrt140 全套)—— 所以你**不用再去安装 VC++ Redistributable**
+- Live2D 模型资产(doro + haru)
+
+❌ exe 里**不包含**的东西(由使用者私有):
+- 你的 API Key 和配置(存在 `%APPDATA%\DesktopPetMonitor\config.json`)
+- 运行日志(存在 `%APPDATA%\DesktopPetMonitor\doro.log`)
+
+---
+
+### 方式 B:从源码跑(适合想改代码 / 看日志 / 换模型的同学)
+
+**前置要求**:**Python 3.10 64-bit**(必须!因为 `live2d-py` 只提供 Python 3.10 的 wheel,3.11 / 3.12 / 3.13 装不上)。
+下载地址:[python.org/downloads/release/python-31011/](https://www.python.org/downloads/release/python-31011/) 选 **Windows installer (64-bit)**。
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/<you>/DesktopPetMonitor.git
+git clone https://github.com/shengzengyang/DesktopPetMonitor.git
 cd DesktopPetMonitor
 
-# 2. 建虚拟环境并装依赖
-python -m venv venv
+# 2. 建虚拟环境(强烈建议指定 python3.10 避免版本踩坑)
+py -3.10 -m venv venv
 venv\Scripts\activate
+
+# 3. 装依赖(约 80 MB,耐心等一两分钟)
 pip install -r requirements.txt
 
-# 3. 启动桌宠
+# 4. 启动桌宠
 python main.py
 ```
+
+如果 `pip install` 卡住或超时,加国内镜像源:
+```bash
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
+```
+
+---
+
+### 交互方式
 
 桌宠启动后:
 - **左键单击**:打开/关闭信息面板
