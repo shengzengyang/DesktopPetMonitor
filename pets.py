@@ -1,8 +1,15 @@
 import os
+import sys
 from pathlib import Path
 
 
-_ROOT = Path(__file__).resolve().parent
+# When running as a PyInstaller --onefile bundle, assets live under
+# sys._MEIPASS (a temp dir that gets extracted on launch). When running
+# from source, they live next to this script.
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    _ROOT = Path(sys._MEIPASS)
+else:
+    _ROOT = Path(__file__).resolve().parent
 
 
 PETS = {

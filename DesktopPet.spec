@@ -1,11 +1,20 @@
 # -*- mode: python ; coding: utf-8 -*-
+# PyInstaller spec for DesktopPetMonitor
+#
+# Bundles the assets/ tree so the exe can find Live2D models at runtime.
+# User config + log still live in %APPDATA%/DesktopPetMonitor/ (not inside
+# the bundle), so the exe contains NO user data whatsoever — only code
+# and shipped Live2D assets.
 
+block_cipher = None
 
 a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[
+        ('assets', 'assets'),
+    ],
     hiddenimports=['pynvml'],
     hookspath=[],
     hooksconfig={},
@@ -14,7 +23,7 @@ a = Analysis(
     noarchive=False,
     optimize=0,
 )
-pyz = PYZ(a.pure)
+pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
 exe = EXE(
     pyz,

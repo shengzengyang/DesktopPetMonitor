@@ -1,18 +1,33 @@
 """Centralized logging.
 
 All modules should `from logger import log` and call `log.info(...)` etc.
-Output goes to both stderr and a rotating file at the project root so you
-can tail it during testing or paste it when reporting bugs.
+Output goes to both stderr and a rotating file so you can tail it during
+testing or paste it when reporting bugs.
+
+Log location:
+  - Running from source  : <project>/doro.log
+  - Running as frozen exe: <user>/AppData/Roaming/DesktopPetMonitor/doro.log
+    (next to config.json — otherwise PyInstaller's temp dir eats the log
+    when the app exits)
 
 File: doro.log (5 MB rotation, keep 3 backups)
 """
 import logging
+import os
 import sys
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
-_PROJECT_ROOT = Path(__file__).resolve().parent
-_LOG_PATH = _PROJECT_ROOT / 'doro.log'
+
+def _resolve_log_path():
+    if getattr(sys, 'frozen', False):
+        base = Path(os.environ.get('APPDATA', os.path.expanduser('~'))) / 'DesktopPetMonitor'
+        base.mkdir(parents=True, exist_ok=True)
+        return base / 'doro.log'
+    return Path(__file__).resolve().parent / 'doro.log'
+
+
+_LOG_PATH = _resolve_log_path()
 
 _FMT = '%(asctime)s.%(msecs)03d %(levelname)-5s [%(name)s] %(message)s'
 _DATEFMT = '%H:%M:%S'
