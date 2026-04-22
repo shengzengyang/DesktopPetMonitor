@@ -27,23 +27,16 @@ There may be bugs. If you run into anything or have feature ideas, **please open
 <!-- ============================================================ -->
 ## 演示视频 / Demo Video
 
-<!-- TODO: 把演示视频放到这个区域,B 站/YouTube 嵌入或上传到 docs/assets/demo.mp4 -->
-
 <div align="center">
 
-<!-- 
-在这里替换成你的 B 站 iframe 或 GitHub 上传的 MP4/GIF。例如:
+https://github.com/user-attachments/assets/placeholder · [直接下载 / Direct download: docs/assets/demo.mp4](./docs/assets/demo.mp4)
 
-<video src="docs/assets/demo.mp4" controls width="720"></video>
-
-或 B 站:
-
-<iframe src="//player.bilibili.com/player.html?bvid=BVxxxxx&page=1" width="720" height="405" allowfullscreen></iframe>
--->
-
-**[ 📺 演示视频占位 — 待添加 / Demo video placeholder — TBD ]**
+<video src="./docs/assets/demo.mp4" controls width="720" muted></video>
 
 </div>
+
+> 如果上面的视频不能在你的浏览器内自动播放,点击上方"直接下载"链接查看。
+> If the video above doesn't autoplay in your browser, click the "Direct download" link above.
 
 ---
 
