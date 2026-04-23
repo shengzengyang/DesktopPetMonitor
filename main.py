@@ -17,6 +17,7 @@ from reminder import SitReminder
 from llm_service import LLMService
 from logger import log, log_path
 from i18n import set_language, t
+import autostart
 
 
 def _make_tray_icon(glyph='🐾'):
@@ -45,6 +46,12 @@ class App:
                  self.cfg.get('pet_kind'),
                  float(self.cfg.get('pet_scale_factor')),
                  float(self.cfg.get('pet_opacity')))
+        # Keep the Windows Run registry entry in sync with saved config.
+        # Safe to call even when value hasn't changed (idempotent).
+        try:
+            autostart.sync(bool(self.cfg.get('autostart_enable')))
+        except Exception:
+            log.exception('autostart sync on startup failed')
         # Migrate legacy emoji pet kinds to haru
         if self.cfg.get('pet_kind') not in [k for k, _ in pets.list_kinds()]:
             self.cfg.set('pet_kind', pets.DEFAULT_KIND)
@@ -215,6 +222,11 @@ class App:
             self.pet.notice(t('app.language_changed_restart'), 4000)
         if 'pet_kind' in patch:
             self._switch_pet(patch['pet_kind'])
+        if 'autostart_enable' in patch:
+            try:
+                autostart.sync(bool(patch['autostart_enable']))
+            except Exception:
+                log.exception('autostart sync on settings apply failed')
         self.pet.apply_opacity()
         self.pet.apply_scale()
         self.pet.apply_fps()

@@ -121,6 +121,16 @@ class SettingsDialog(QDialog):
         self.particles_check.setChecked(bool(self.cfg.get('show_particles')))
         form.addRow("", self.particles_check)
 
+        self.autostart_check = QCheckBox(t('settings.autostart'))
+        # Read live registry state so the checkbox reflects reality, not just
+        # what config.json remembers (user may have deleted the Run entry
+        # manually, and we want the box to follow).
+        from autostart import is_enabled as _autostart_is_enabled
+        self.autostart_check.setChecked(
+            bool(self.cfg.get('autostart_enable')) or _autostart_is_enabled()
+        )
+        form.addRow("", self.autostart_check)
+
         return w
 
     def _build_behavior(self):
@@ -362,6 +372,7 @@ class SettingsDialog(QDialog):
             'ip_alert_enable': self.ip_alert_enable_check.isChecked(),
             'ip_alert_expected_1': self.ip_alert_1_edit.text().strip(),
             'ip_alert_expected_2': self.ip_alert_2_edit.text().strip(),
+            'autostart_enable': self.autostart_check.isChecked(),
         }
         self.cfg.update(patch)
         self.applied.emit(patch)

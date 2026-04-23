@@ -56,6 +56,9 @@ DEFAULTS = {
     # i18n
     'language': 'zh',
 
+    # Auto-start doro at Windows login (HKCU Run registry entry)
+    'autostart_enable': False,
+
     # IP alert — pet yells if detected IP doesn't match any expected value.
     # Values can be exact IPs ("203.0.113.42") or prefixes ("203.0.113.").
     # A match on EITHER direct or proxy IP against EITHER expected slot is OK.
