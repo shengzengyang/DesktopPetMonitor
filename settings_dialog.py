@@ -197,12 +197,17 @@ class SettingsDialog(QDialog):
         form.setContentsMargins(12, 12, 12, 12)
         form.setSpacing(10)
 
+        privacy = bool(self.cfg.get('privacy_mode'))
+
         self.llm_enable_check = QCheckBox(t('settings.llm_enable'))
         self.llm_enable_check.setChecked(bool(self.cfg.get('llm_enabled')))
         form.addRow("", self.llm_enable_check)
 
+        # In privacy mode, sensitive fields echo as password (black dots) and
+        # the URL/Model edits are read-only so the screen recorder can't see
+        # the real value while still letting settings dialog open safely.
         self.llm_key_edit = QLineEdit()
-        self.llm_key_edit.setEchoMode(QLineEdit.Password)
+        self.llm_key_edit.setEchoMode(QLineEdit.Password)  # always masked
         self.llm_key_edit.setText(self.cfg.get('llm_api_key') or '')
         self.llm_key_edit.setPlaceholderText("sk-...")
         form.addRow(t('settings.llm_api_key'), self.llm_key_edit)
@@ -210,11 +215,17 @@ class SettingsDialog(QDialog):
         self.llm_url_edit = QLineEdit()
         self.llm_url_edit.setText(self.cfg.get('llm_base_url') or '')
         self.llm_url_edit.setPlaceholderText("https://api.openai.com/v1")
+        if privacy:
+            self.llm_url_edit.setEchoMode(QLineEdit.Password)
+            self.llm_url_edit.setReadOnly(True)
         form.addRow(t('settings.llm_base_url'), self.llm_url_edit)
 
         self.llm_model_edit = QLineEdit()
         self.llm_model_edit.setText(self.cfg.get('llm_model') or '')
         self.llm_model_edit.setPlaceholderText("gpt-4o-mini")
+        if privacy:
+            self.llm_model_edit.setEchoMode(QLineEdit.Password)
+            self.llm_model_edit.setReadOnly(True)
         form.addRow(t('settings.llm_model'), self.llm_model_edit)
 
         self.llm_maxtok_spin = QSpinBox()
@@ -278,14 +289,22 @@ class SettingsDialog(QDialog):
         self.ip_alert_enable_check.setChecked(bool(self.cfg.get('ip_alert_enable')))
         form.addRow("", self.ip_alert_enable_check)
 
+        privacy = bool(self.cfg.get('privacy_mode'))
+
         self.ip_alert_1_edit = QLineEdit()
         self.ip_alert_1_edit.setText(self.cfg.get('ip_alert_expected_1') or '')
         self.ip_alert_1_edit.setPlaceholderText("203.0.113.42")
+        if privacy:
+            self.ip_alert_1_edit.setEchoMode(QLineEdit.Password)
+            self.ip_alert_1_edit.setReadOnly(True)
         form.addRow(t('settings.ip_alert_expected_1'), self.ip_alert_1_edit)
 
         self.ip_alert_2_edit = QLineEdit()
         self.ip_alert_2_edit.setText(self.cfg.get('ip_alert_expected_2') or '')
         self.ip_alert_2_edit.setPlaceholderText("198.51.100.")
+        if privacy:
+            self.ip_alert_2_edit.setEchoMode(QLineEdit.Password)
+            self.ip_alert_2_edit.setReadOnly(True)
         form.addRow(t('settings.ip_alert_expected_2'), self.ip_alert_2_edit)
 
         hint = QLabel(t('settings.ip_alert_hint'))

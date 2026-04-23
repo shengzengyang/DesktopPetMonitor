@@ -27,6 +27,10 @@ _CATALOG = {
         # ---- pet context menu ----
         'menu.chat': '💬 对 doro 说...  (Ctrl+Space)',
         'menu.panel': '📊 显示/隐藏面板',
+        'menu.privacy_on': '🔒 开启隐私模式 (录屏用)',
+        'menu.privacy_off': '🔓 关闭隐私模式',
+        'notice.privacy_on': '🔒 隐私模式已开启 — IP / URL / Key 都已打码',
+        'notice.privacy_off': '🔓 隐私模式已关闭',
         'menu.expressions': '😀 表情',
         'menu.motions': '🎬 动作',
         'menu.sizes': '📐 大小',
@@ -149,6 +153,10 @@ _CATALOG = {
 
         'menu.chat': '💬 Talk to doro...  (Ctrl+Space)',
         'menu.panel': '📊 Toggle panel',
+        'menu.privacy_on': '🔒 Enable privacy mode (for recording)',
+        'menu.privacy_off': '🔓 Disable privacy mode',
+        'notice.privacy_on': '🔒 Privacy mode ON — IP / URL / Key masked',
+        'notice.privacy_off': '🔓 Privacy mode OFF',
         'menu.expressions': '😀 Expression',
         'menu.motions': '🎬 Motion',
         'menu.sizes': '📐 Size',

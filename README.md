@@ -24,6 +24,14 @@ There may be bugs. If you run into anything or have feature ideas, **please open
 
 ---
 
+## 🎬 演示视频 / Demo Video
+
+👉 **[点这里查看演示视频 / Click here for demo](./docs/videos/demo_v0.2.mp4)**
+
+录制于 v0.2.0,展示了桌面闲逛、右键菜单、表情/动作切换、AI 对话、IP 监控和隐私模式。
+
+---
+
 <!-- ============================================================ -->
 
 ## 简体中文

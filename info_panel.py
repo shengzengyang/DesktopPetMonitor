@@ -88,6 +88,19 @@ def _sep():
     return line
 
 
+def _mask_ip(ip):
+    """Mask the last two octets of an IPv4 for display in privacy mode.
+    Returns unchanged input if it doesn't look like IPv4 or is empty.
+    """
+    if not ip or ip in ('--', 'N/A', 'unknown', ''):
+        return ip
+    parts = str(ip).split('.')
+    if len(parts) == 4 and all(p.isdigit() for p in parts):
+        return f"{parts[0]}.{parts[1]}.***.***"
+    # IPv6 or other format — mask aggressively
+    return '***.***.***.***'
+
+
 class InfoPanel(QWidget):
     alertTriggered = pyqtSignal(str)
     alertCleared = pyqtSignal()
@@ -227,15 +240,22 @@ class InfoPanel(QWidget):
             self.ip_fetcher.refresh()
 
         direct_ip, proxy_ip = self.ip_fetcher.get()
+        # Alert check uses the REAL IPs (we always want mismatch detection
+        # to work, privacy mode is UI-only).
+        self._check_ip_alert(direct_ip, proxy_ip)
+        # Mask for display if privacy mode is on.
+        if self.cfg.get('privacy_mode'):
+            direct_ip_disp, proxy_ip_disp = _mask_ip(direct_ip), _mask_ip(proxy_ip)
+        else:
+            direct_ip_disp, proxy_ip_disp = direct_ip, proxy_ip
         self.direct_ip_label.setText(
             f"<span style='color:#94a3b8'>{t('panel.direct_ip')}</span> "
-            f"<b style='color:#fbbf24'>{direct_ip}</b>"
+            f"<b style='color:#fbbf24'>{direct_ip_disp}</b>"
         )
         self.proxy_ip_label.setText(
             f"<span style='color:#94a3b8'>{t('panel.proxy_ip')}</span> "
-            f"<b style='color:#34d399'>{proxy_ip}</b>"
+            f"<b style='color:#34d399'>{proxy_ip_disp}</b>"
         )
-        self._check_ip_alert(direct_ip, proxy_ip)
 
         net = self.monitor.network()
         self.net_label.setText(

@@ -599,6 +599,10 @@ class PetWidget(QOpenGLWidget):
 
         act_chat = menu.addAction(t('menu.chat'))
         act_panel = menu.addAction(t('menu.panel'))
+        privacy_on = bool(self.cfg.get('privacy_mode'))
+        act_privacy = menu.addAction(
+            t('menu.privacy_off') if privacy_on else t('menu.privacy_on')
+        )
         menu.addSeparator()
 
         expr_menu = menu.addMenu(t('menu.expressions'))
@@ -670,6 +674,10 @@ class PetWidget(QOpenGLWidget):
             self.open_chat()
         elif chosen == act_panel:
             self.toggle_panel()
+        elif chosen == act_privacy:
+            new_state = not bool(self.cfg.get('privacy_mode'))
+            self.cfg.set('privacy_mode', new_state)
+            self.notice(t('notice.privacy_on' if new_state else 'notice.privacy_off'), 2500)
         elif chosen in expr_actions:
             kind, key, exp_name = expr_actions[chosen]
             if kind == 'named':
